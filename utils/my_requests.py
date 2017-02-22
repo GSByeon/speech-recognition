@@ -15,7 +15,7 @@ def get_news(query, id, secret):
             params={
                 "query": query,
                 "display": "10",
-                "sort": "sim",
+                "sort": "date",
             },
             headers={
                 "X-Naver-Client-Id": id,
