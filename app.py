@@ -4,6 +4,8 @@
 if __name__ == '__main__':
     import speech_recognition as sr
     import sys
+    import os
+    import re
     from utils.my_requests import get_news
     from konlpy.tag import Twitter
 
@@ -31,7 +33,13 @@ if __name__ == '__main__':
                 news_index = len(morphemes) - 1
 
             query = ' '.join(morphemes[:news_index])
-            print get_news(query, sys.argv[1], sys.argv[2])
+        data = get_news(query, sys.argv[1], sys.argv[2])
+        title = re.sub(r'&.*;|<[^<]+?>', '', data['items'][0]['title'])
+        print(title)
+        description = re.sub(r'&.*;|<[^<]+?>', '', data['items'][0]['description'])
+        print(description)
+        os.system('say -r 150 "제목.. ' + title.encode('utf-8') + '."')
+        os.system('say -r 150 "내용... ' + description.encode('utf-8') + '"')
 
     except sr.UnknownValueError:
         print "Google Speech Recognition could not understand audio"
