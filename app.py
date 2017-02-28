@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Created by JHJ on 2017. 2. 14.
 
 if __name__ == '__main__':
@@ -34,14 +34,18 @@ if __name__ == '__main__':
 
             query = ' '.join(morphemes[:news_index])
         data = get_news(query, sys.argv[1], sys.argv[2])
-        title = re.sub(r'&.*;|<[^<]+?>', '', data['items'][0]['title'])
+        title = re.sub(r'&[^&]*;|<[^<]+?>|\([^\(]*\)', '', data['items'][0]['title'])
         print(title)
-        description = re.sub(r'&.*;|<[^<]+?>', '', data['items'][0]['description'])
+        description = re.sub(r'&[^&]*;|<[^<]+?>|\([^\(]*\)', '', data['items'][0]['description'])
         print(description)
         os.system('say -r 150 "제목.. ' + title.encode('utf-8') + '."')
         os.system('say -r 150 "내용... ' + description.encode('utf-8') + '"')
 
     except sr.UnknownValueError:
         print "Google Speech Recognition could not understand audio"
+        os.system('say -r 150 "죄송합니다. 다시 말씀해주세요."')
     except sr.RequestError as e:
         print "Could not request results from Google Speech Recognition service; {0}".format(e)
+        os.system('say -r 150 "죄송합니다. 다시 말씀해주세요."')
+    except:
+        os.system('say -r 150 "죄송합니다. 다시 말씀해주세요."')
